@@ -6,11 +6,20 @@ let boardHeight =640;
 let context;
 
 //bird
-let birdWidth =34;
-let birdHeight =24;
+let birdWidth =90;
+let birdHeight =90;
 let birdX=boardWidth/8;
 let birdY =boardHeight/2;
 let birdImage
+
+// Bird animation variables
+let birdFrame = 0;       // Current frame
+let birdFrameCount = 4;  // Total frames in sprite
+let birdFrameWidth = 64; // Width of one single frame in sprite
+let birdFrameHeight = 64; // Height of one single frame in sprite
+let frameDelay = 5;      // Number of updates before switching frame
+let frameDelayCounter = 0;
+
 
 //pipes
 let pipeArray = [];
@@ -35,7 +44,13 @@ let bird = {
     x:birdX,
     y:birdY,
     width : birdWidth,
-    height: birdHeight
+    height: birdHeight,
+    hitbox: {
+    offsetX: 20,                  
+    offsetY: 20,                   
+    width: birdWidth - 40,      
+    height: birdHeight - 40       
+    }
 }
 
 window.onload =function(){
@@ -50,11 +65,8 @@ window.onload =function(){
     //context.fillRect(bird.x,bird.y,bird.width,bird.height);
 
     //Load image
-    birdImage=new Image()
-    birdImage.src ="./img/flappybird.png";
-    birdImage.onload=function(){
-        context.drawImage(birdImage,bird.x,bird.y,bird.width,bird.height)
-    }
+    birdImage = new Image()
+    birdImage.src = "./img/fly.png";
 
     topPipeImage=new Image();
     topPipeImage.src ="./img/toppipe.png";
@@ -77,9 +89,28 @@ function update(){
     context.clearRect(0,0,board.width,board.height);
 
     //bird drawing
-    velocityY+=gravity
-    bird.y=Math.max(bird.y+velocityY,0); //apply gravity limit from going to the top
-    context.drawImage(birdImage,bird.x,bird.y,bird.width,bird.height);
+    velocityY += gravity;
+    bird.y = Math.max(bird.y + velocityY, 0); //apply gravity limit from going to the top
+
+    //match hitbox position to the current one
+    bird.hitbox.x = bird.x + bird.hitbox.offsetX;
+    bird.hitbox.y = bird.y + bird.hitbox.offsetY;
+
+    //bird animation frame handling
+    frameDelayCounter++;
+    if (frameDelayCounter >= frameDelay) {
+        birdFrame = (birdFrame + 1) % birdFrameCount;
+        frameDelayCounter = 0;
+    }
+
+    //draw bird frame
+    context.drawImage(
+        birdImage,
+        birdFrame * birdFrameWidth, 0,       
+        birdFrameWidth, birdFrameHeight,     
+        bird.x, bird.y,                       
+        bird.width, bird.height               
+    );
 
     if (bird.y>board.height){
         gameOver=true;
@@ -166,11 +197,15 @@ function moveBird(e) {
 }
 
 
-function detectCollision(a, b) {
+function detectCollision(bird, pipe) {
+    //shrink bird rectangle by 20 pixels on each side
+    let shrink = 20;
+
     return (
-        a.x < b.x + b.width &&
-        a.x + a.width > b.x &&
-        a.y < b.y + b.height &&
-        a.y + a.height > b.y
+        bird.x + shrink + bird.width - shrink * 2 > pipe.x &&
+        bird.x + shrink < pipe.x + pipe.width &&
+        bird.y + shrink + bird.height - shrink * 2 > pipe.y &&
+        bird.y + shrink < pipe.y + pipe.height
     );
 }
+
