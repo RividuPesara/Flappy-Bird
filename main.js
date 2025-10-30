@@ -61,7 +61,7 @@ window.onload =function(){
 
     //Load image
     birdImage = new Image()
-    birdImage.src = "./img/fly.png";
+    birdImage.src = "./img/Fly.png";
 
     topPipeImage=new Image();
     topPipeImage.src ="./img/toppipe.png";
