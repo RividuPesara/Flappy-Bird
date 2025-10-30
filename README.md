@@ -16,6 +16,10 @@ A Flappy Bird-style game built using HTML5 Canvas and JavaScript. To practice an
 
 ## Animation
 
+
+https://github.com/user-attachments/assets/39a8902e-1639-4273-953b-5483f1e2101d
+
+
 ---
 
 ## Features
