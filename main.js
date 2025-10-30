@@ -61,13 +61,13 @@ window.onload =function(){
 
     //Load image
     birdImage = new Image()
-    birdImage.src = "./img/Fly.png";
+    birdImage.src = "img/Fly.png";
 
     topPipeImage=new Image();
-    topPipeImage.src ="./img/toppipe.png";
+    topPipeImage.src ="img/toppipe.png";
 
     bottomPipeImage=new Image();
-    bottomPipeImage.src ="./img/bottompipe.png";
+    bottomPipeImage.src ="img/bottompipe.png";
     
 
     requestAnimationFrame(update);
