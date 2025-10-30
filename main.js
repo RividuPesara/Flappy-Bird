@@ -59,11 +59,6 @@ window.onload =function(){
     board.width = boardWidth;
     context = board.getContext('2d');
 
-    //flappy bird
-
-    //context.fillStyle ="green";
-    //context.fillRect(bird.x,bird.y,bird.width,bird.height);
-
     //Load image
     birdImage = new Image()
     birdImage.src = "./img/fly.png";
